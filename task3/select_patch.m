@@ -1,6 +1,6 @@
 % find a candidate planar patch
 function [fitlist,plane] = select_patch(points)
-
+  
   [L,D] = size(points);
   tmpnew = zeros(L,3);
   tmprest = zeros(L,3);
@@ -8,11 +8,13 @@ function [fitlist,plane] = select_patch(points)
   % pick a random point until a successful plane is found
   success = 0;
   while ~success
-    idx = floor(L*rand)
+    idx = 30000; %floor(L*rand)
     pnt = points(idx,:);
-  
+        if sum(pnt) == 0
+            continue
+        end
     % find points in the neighborhood of the given point
-    DISTTOL = 5.0;
+    DISTTOL = .005;
     fitcount = 0;
     restcount = 0;
     for i = 1 : L
@@ -30,7 +32,6 @@ function [fitlist,plane] = select_patch(points)
     if fitcount > 10
       % fit a plane
       [plane,resid] = fitplane(tmpnew(1:fitcount,:))
-
       if resid < 0.1
         fitlist = tmpnew(1:fitcount,:);
         return
