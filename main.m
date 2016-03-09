@@ -9,10 +9,9 @@ for i = 1:16
     [NumRows,NumCols,W] = size(R);
     R = reshape(R, [NumRows*NumCols,W]);
     
-    figure
-    clf
-    hold on
-    plot3(R(:,4),R(:,5),R(:,6),'k.')
+    %figure
+    %hold on
+    %plot3(R(:,4),R(:,5),R(:,6),'k.')
 
     [NPts,W] = size(R);
     patchid = zeros(NPts,1);
@@ -37,7 +36,7 @@ for i = 1:16
             [NewL,W] = size(newlist);
             [OldL,W] = size(oldlist);
             if j == 1
-            plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
+            %plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
             save1=newlist;
             end
             pause(1)
