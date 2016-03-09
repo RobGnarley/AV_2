@@ -1,10 +1,10 @@
 global model planelist planenorm facelines
 
-for i = 1:1
+X = cell(16);
+
+for i = 1:16
    
     R = pcl_cell{i};
-    
-    R = R(:,:,4:6);
     
     [NumRows,NumCols,W] = size(R);
     R = reshape(R, [NumRows*NumCols,W]);
@@ -12,7 +12,7 @@ for i = 1:1
     figure
     clf
     hold on
-    plot3(R(:,1),R(:,2),R(:,3),'k.')
+    plot3(R(:,4),R(:,5),R(:,6),'k.')
 
     [NPts,W] = size(R);
     patchid = zeros(NPts,1);
@@ -23,42 +23,30 @@ for i = 1:1
     % used in practice. Here we hope the 4 largest will be included in the
     % 5 by virtue of their size
     remaining = R;
-    for i = 1 : 1   
+    for j = 1 : 1   
 
         % select a random small surface patch
-        [oldlist,plane] = select_patch(remaining);
+        [oldlist,plane] = bg_select_patch(remaining);
 
         % grow patch
         stillgrowing = 1;
         while stillgrowing
             % find neighbouring points that lie in plane
             stillgrowing = 0;
-            [newlist,remaining] = getallpoints(plane,oldlist,remaining,NPts);
+            [newlist,remaining] = bg_getallpoints(plane,oldlist,remaining,NPts);
             [NewL,W] = size(newlist);
             [OldL,W] = size(oldlist);
-            if i == 1
-            plot3(newlist(:,1),newlist(:,2),newlist(:,3),'r.')
+            if j == 1
+            plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
             save1=newlist;
-            elseif i==2 
-            plot3(newlist(:,1),newlist(:,2),newlist(:,3),'b.')
-            save2=newlist;
-            elseif i == 3
-            plot3(newlist(:,1),newlist(:,2),newlist(:,3),'g.')
-            save3=newlist;
-            elseif i == 4
-            plot3(newlist(:,1),newlist(:,2),newlist(:,3),'c.')
-            save4=newlist;
-            else
-            plot3(newlist(:,1),newlist(:,2),newlist(:,3),'m.')
-            save5=newlist;
             end
             pause(1)
     
             if NewL > OldL + 50
                 % refit plane
-                [newplane,fit] = fitplane(newlist);
+                [newplane,fit] = bg_fitplane(newlist);
                 [newplane',fit,NewL]
-                planelist(i,:) = newplane';
+                planelist(j,:) = newplane';
                 if fit > 0.04*NewL       % bad fit - stop growing
                     break
                 end
@@ -96,7 +84,7 @@ for i = 1:1
       ['no models recognised in this image']
     end
     
-    
+    X{i} = remaining;
                                                                         
    
 end
