@@ -9,9 +9,9 @@ for i = 1:16
     [NumRows,NumCols,W] = size(R);
     R = reshape(R, [NumRows*NumCols,W]);
     
-    %figure
-    %hold on
-    %plot3(R(:,4),R(:,5),R(:,6),'k.')
+    figure
+    % hold on
+    % plot3(R(:,4),R(:,5),R(:,6),'k.')
 
     [NPts,W] = size(R);
     patchid = zeros(NPts,1);
@@ -36,7 +36,7 @@ for i = 1:16
             [NewL,W] = size(newlist);
             [OldL,W] = size(oldlist);
             if j == 1
-            %plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
+            plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
             save1=newlist;
             end
             pause(1)
@@ -78,6 +78,7 @@ for i = 1:16
     success = itree(3,0,3,pairs,0,4);
     if success
         ['model recognised in this image']
+    
     end
     if ~success
       ['no models recognised in this image']

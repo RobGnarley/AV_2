@@ -1,3 +1,15 @@
+Y = cell(16,1);
+idxs = cell(16,1);
+
+for j = 1:16
+    points = X{j};
+    cleanPoints = points(points(:,6)~=0,:);
+    indexK = kmeans(cleanPoints(:,4:6),6);
+    Y{j} = cleanPoints;
+    idxs{j} = indexK;
+end
+
+
 for i = 1:16
 
 figure(i)
