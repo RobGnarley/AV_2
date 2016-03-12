@@ -6,6 +6,8 @@ for i = 1:16
    
     R = pcl_cell{i};
     
+    
+    
     [NumRows,NumCols,W] = size(R);
     R = reshape(R, [NumRows*NumCols,W]);
     

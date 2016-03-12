@@ -14,7 +14,7 @@ function [fitlist,plane] = bg_select_patch(points)
             continue
         end
     % find points in the neighborhood of the given point
-    DISTTOL = .005;
+    DISTTOL = 0.01;
 
     fitcount = 0;
     restcount = 0;
