@@ -20,7 +20,7 @@ pointer = 1;
 
 %hold on
 
-for i = 10:11
+for i = 1:16
     
     if i ~= BASE
         

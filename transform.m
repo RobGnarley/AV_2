@@ -27,6 +27,13 @@ B = [base_v1', base_v2', base_v3'];
 % Estimate Rotation
 [U,~,V] = svd(T*B');
 R = V*U';
+dV = det(V);
+
+if dV < 0
+    neg = [1, 1, -1;1, 1, -1;1, 1, -1];
+    V = V .* neg;
+    R = V*U';
+end
 
 % Estimate Translation
 dist_1 = base_spheres{1}' - R * target_spheres{1}';
@@ -52,4 +59,5 @@ for i = 1:N
     transformed_pxls(i,4:6) = Rxyz_t';
 
 end
+
 

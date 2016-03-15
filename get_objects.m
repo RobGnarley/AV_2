@@ -68,11 +68,11 @@ for k = 1:16
     STATS = stats(1:4);
     
     % Get target object
-    %target_idxs = STATS(1).PixelList;
-    %target_pxls{k} = get_pixels(target_idxs,I);
-    [R,C,D] = size(I);
-    I2 = reshape(I,[R*C,D]);
-    target_pxls{k} = I2;
+    target_idxs = STATS(1).PixelList;
+    target_pxls{k} = get_pixels(target_idxs,I);
+    %[R,C,D] = size(I);
+    %I2 = reshape(I,[R*C,D]);
+    %target_pxls{k} = I2;
     %figure
     %plot3(target_pxls{k}(:,4),target_pxls{k}(:,5),target_pxls{k}(:,6),'r.')
     
