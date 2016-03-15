@@ -68,8 +68,13 @@ for k = 1:16
     STATS = stats(1:4);
     
     % Get target object
-    target_idxs = STATS(1).PixelList;
-    target_pxls{k} = get_pixels(target_idxs);
+    %target_idxs = STATS(1).PixelList;
+    %target_pxls{k} = get_pixels(target_idxs,I);
+    [R,C,D] = size(I);
+    I2 = reshape(I,[R*C,D]);
+    target_pxls{k} = I2;
+    %figure
+    %plot3(target_pxls{k}(:,4),target_pxls{k}(:,5),target_pxls{k}(:,6),'r.')
     
     
     sphere_pxls = cell(3);
@@ -79,12 +84,13 @@ for k = 1:16
     for i = 1:3
         sphere_idxs{i} = STATS(i+1).PixelList;
         sphere_pxls{i} = get_pixels(sphere_idxs{i},I);
-        [c,r] = sphereFit(sphere_pxls{i}(:,4:6));
-        sphere_params{i} = [c,r];
-        norm = normRGB(sphere_pxls{i});
-        rhist = dohist(norm(:,1),0);
-        ghist = dohist(norm(:,2),0);
-        bhist = dohist(norm(:,3),0);
+        %target_pxls{k} = [target_pxls{k};sphere_pxls{i}];
+        [c,~] = sphereFit(sphere_pxls{i}(:,4:6));
+        sphere_params{i} = c;
+        norm_pxls = normRGB(sphere_pxls{i});
+        rhist = dohist(norm_pxls(:,1),0);
+        ghist = dohist(norm_pxls(:,2),0);
+        bhist = dohist(norm_pxls(:,3),0);
         hist = cat(1, rhist, ghist, bhist);
         norm_hist = hist ./ sum(hist);
         sphere_hists{i} = norm_hist;
@@ -106,7 +112,7 @@ for k = 1:16
                 dists(i,j) = 1 - sum(sqrt(hi).*sqrt(hj));
             end
         end
-        [mindists, argmindists] = min(dists,[],2);
+        [~, argmindists] = min(dists,[],2);
         for i = 1:3
             j = argmindists(i);
             old_sphere_params{j} = sphere_params{i};
@@ -119,15 +125,17 @@ for k = 1:16
     sphere_params_all{k} = old_sphere_params;
     %sphere_pxls_all{k} = old_sphere_pxls;
     
-    figure
+    %figure
+    %imshow(I(:,:,1:3)/255)
     %[R,C,D] = size(I);
     %I2 = reshape(I,[R*C,D]);
     %plot3(I2(:,4),I2(:,5),I2(:,6),'r.');
     %figure
-    imshow(I(:,:,1:3)/255)
+    %imshow(I(:,:,1:3)/255)
     %hold on
     %colours = ['r.','g.','b.'];
     %for i = 1:3
     %    plot(old_sphere_idxs{i}(:,1),old_sphere_idxs{i}(:,2),colours(i))
     %end
+    %hold off
 end

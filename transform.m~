@@ -3,9 +3,9 @@ function [ transformed_pxls, sphere_1, sphere_2, sphere_3 ] = transform( target_
 %   Detailed explanation goes here
 
 % Get target vectors
-target_v1 = target_spheres{1} - target_spheres{2};
-target_v2 = target_spheres{2} - target_spheres{3};
-target_v3 = target_spheres{3} - target_spheres{1};
+target_v1 = abs(target_spheres{1} - target_spheres{2});
+target_v2 = abs(target_spheres{2} - target_spheres{3});
+target_v3 = abs(target_spheres{3} - target_spheres{1});
 
 target_v1 = target_v1 / norm(target_v1);
 target_v2 = target_v2 / norm(target_v2);
@@ -14,9 +14,9 @@ target_v3 = target_v3 / norm(target_v3);
 T = [target_v1', target_v2', target_v3'];
 
 % Get base vectors
-base_v1 = base_spheres{1} - base_spheres{2};
-base_v2 = base_spheres{2} - base_spheres{3};
-base_v3 = base_spheres{3} - base_spheres{1};
+base_v1 = abs(base_spheres{1} - base_spheres{2});
+base_v2 = abs(base_spheres{2} - base_spheres{3});
+base_v3 = abs(base_spheres{3} - base_spheres{1});
 
 base_v1 = base_v1 / norm(base_v1);
 base_v2 = base_v2 / norm(base_v2);
