@@ -1,4 +1,6 @@
-function [target_pxls, sphere_params_all] = get_objects(pcl_cell)
+%function [target_idxs_all, sphere_idxs_all] = get_objects(pcl_cell)
+
+% Chossing 10 as base image, most info
 
 target_pxls = cell(16);
 sphere_params_all = cell(16);
