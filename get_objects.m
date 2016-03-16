@@ -1,6 +1,7 @@
-function [target_pxls, sphere_params_all] = get_objects(pcl_cell)
+function [target_pxls, sphere_params_all, target_images] = get_objects(pcl_cell)
 
 target_pxls = cell(16);
+target_images = cell(16);
 sphere_params_all = cell(16);
 %sphere_pxls_all = cell(16);
 old_sphere_hists = cell(3);
@@ -70,6 +71,7 @@ for k = 1:16
     % Get target object
     target_idxs = STATS(1).PixelList;
     target_pxls{k} = get_pixels(target_idxs,I);
+    target_images{k} = get_pixels2(target_idxs,I);
     %[R,C,D] = size(I);
     %I2 = reshape(I,[R*C,D]);
     %target_pxls{k} = I2;

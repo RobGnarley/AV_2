@@ -1,11 +1,11 @@
 % Load data (into pcl_cell)
 load('av_pcl.mat')
 % get target point cloud and sphere centres 
-[target_pxls, sphere_params_all] = get_objects(pcl_cell);
+[target_pxls, sphere_params_all, target_images] = get_objects(pcl_cell);
 
 % Chossing #10 as base image, most info
 
-BASE = 10;
+BASE = 1;
 
 Total_N = 0;
 for i = 1:16
@@ -20,18 +20,21 @@ pointer = 1;
 
 %hold on
 
+targets = cell(16);
+
 for i = 1:16
     
     if i ~= BASE
         
-        [transformed_pxls, s1, s2, s3] = transform(target_pxls{i},...
+        [transformed_pxls, s1, s2, s3, targets{i}] = transform(target_pxls{i},target_images{i},...
                                      sphere_params_all{i},sphere_params_all{BASE});
-        plot3(s1(1),s1(2),s1(3),'b*')
-        plot3(s2(1),s2(2),s2(3),'g*')
-        plot3(s3(1),s3(2),s3(3),'m*')
+        %plot3(s1(1),s1(2),s1(3),'b*')
+        %plot3(s2(1),s2(2),s2(3),'g*')
+        %plot3(s3(1),s3(2),s3(3),'m*')
                                  
     else
         transformed_pxls = target_pxls{i};
+        targets{i} = target_images{i};
     end
     
     [N,~] = size(transformed_pxls);
@@ -41,5 +44,20 @@ for i = 1:16
 
 end
 
-plot3(point_cloud(:,4),point_cloud(:,5),point_cloud(:,6),'r.')
+%R = [1 0 0; 0 cos(deg2rad(30)) sin(deg2rad(30));  0 -sin(deg2rad(30)) cos(deg2rad(30))];
+
+%XYZ = point_cloud(:,4:6);
+%XYZ = (R * XYZ')';
+
+%R2 = [cos(deg2rad(180)) sin(deg2rad(180)) 0; sin(deg2rad(180)) cos(deg2rad(180)) 0; 0 0 1];
+
+%XYZ = (R2 * XYZ')';
+
+%fscatter32(XYZ(:,1),XYZ(:,2),XYZ(:,3),XYZ(:,3));
+
+%my_plotpcl(target_images)
+
+planelist = find_planes( point_cloud );
+
+%plot3(point_cloud(:,4),point_cloud(:,5),point_cloud(:,6),'k.')
 

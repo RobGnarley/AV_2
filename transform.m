@@ -1,4 +1,4 @@
-function [ transformed_pxls, sphere_1, sphere_2, sphere_3 ] = transform( target_pxls, target_spheres, base_spheres )
+function [ transformed_pxls, sphere_1, sphere_2, sphere_3, transformed_image] = transform( target_pxls, target_image, target_spheres, base_spheres )
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -57,6 +57,26 @@ for i = 1:N
     
     transformed_pxls(i,1:3) = rgb;
     transformed_pxls(i,4:6) = Rxyz_t';
+
+end
+
+[R,C,D] = size(target_image);
+transformed_image = zeros(R,C,D);
+for i = 1:R
+    
+    for j = 1:C
+        
+        if target_image(i,j,6) ~= 0
+    
+            rgb = target_image(i,j,1:3);
+            xyz = target_image(i,j,4:6);
+            xyz = reshape(xyz,[1,3]);
+            Rxyz_t = (R * xyz') + t;
+    
+            transformed_image(i,j,1:3) = rgb;
+            transformed_image(i,j,4:6) = Rxyz_t';
+        end
+    end
 
 end
 
