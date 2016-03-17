@@ -59,5 +59,13 @@ end
 
 planelist = find_planes( point_cloud );
 
+a = zeros(9,9);
+for i = 1:9
+    for j = 1:9
+        dot_prod = dot(planelist(i,1:3),planelist(j,1:3))
+        a(i,j) = acosd(dot_prod)
+    end
+end
+
 %plot3(point_cloud(:,4),point_cloud(:,5),point_cloud(:,6),'k.')
 

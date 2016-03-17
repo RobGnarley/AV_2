@@ -3,7 +3,7 @@ function [ planelist ] = find_planes( point_cloud )
 %   Detailed explanation goes here
 
 R = point_cloud;
-NORMTOL = 0.9;
+NORMTOL = 0.7;
 
 
 figure
