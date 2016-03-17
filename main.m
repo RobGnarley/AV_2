@@ -5,7 +5,7 @@ load('av_pcl.mat')
 
 % Chossing #10 as base image, most info
 
-BASE = 1;
+BASE = 10;
 
 Total_N = 0;
 for i = 1:16
@@ -22,7 +22,7 @@ pointer = 1;
 
 targets = cell(16);
 
-for i = 1:16
+for i = [1 2 5 6 7 8 9 10 11 12 13]
     
     if i ~= BASE
         

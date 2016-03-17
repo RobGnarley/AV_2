@@ -6,7 +6,7 @@ sphere_params_all = cell(16);
 %sphere_pxls_all = cell(16);
 old_sphere_hists = cell(3);
 
-for k = 1:16
+for k = [1 2 4 5 6 7 8 9 10 11 12 13 14 15 16]
     
     %figure
     

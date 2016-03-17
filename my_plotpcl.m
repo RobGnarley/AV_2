@@ -3,7 +3,7 @@ function my_plotpcl(pcls)
 figure
 hold on
 
-for i = 1:1
+for i = [1 2 4 5 6 7 8 9 10 11 12 13 14 15 16]
     
     kk = pcls{i}(:,:, 6) ~= 0;
     x  = pcls{i}(:,:, 4);
@@ -19,11 +19,13 @@ for i = 1:1
     alpha = deg2rad(30);
     R = [1 0 0; 0 cos(alpha) sin(alpha); 0 -sin(alpha) cos(alpha)];
     XYZ = (R*XYZ')';
-    fscatter32(XYZ(:,1), XYZ(:,2), XYZ(:,3), Xim, cm)
+    %fscatter32(XYZ(:,1), XYZ(:,2), XYZ(:,3), Xim, cm)
+    plot3(XYZ(:,1), XYZ(:,2), XYZ(:,3),'Color',[(i/16) 0 0],'Marker','.','LineStyle','none')
     zlim([0.2 max(z(:))])
     ylim([0 1])
     xlim([-.5 .5])
     set(gca,'zdir','reverse')
+    pause(2)
 end
 
   % Show colour image

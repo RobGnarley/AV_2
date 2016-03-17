@@ -35,17 +35,7 @@ function [fitlist,plane] = tar_select_patch(points, planelist)
     if fitcount > 10
       % fit a plane
       [plane,resid] = tar_fitplane(tmpnew(1:fitcount,:))
-      normal = plane(1:3);
-      good = true;
-      for j = 1:D
-          if planelist(j,1) ~= 0
-            normal_j = planelist(j,1:3);
-            if abs(dot(normal,normal_j)) > NORMTOL
-                good = false;
-            end
-          end
-      end
-      if resid < 0.1 && good
+      if resid < 0.1
         fitlist = tmpnew(1:fitcount,:);
         return
       end

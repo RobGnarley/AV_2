@@ -3,7 +3,7 @@ function [ planelist ] = find_planes( point_cloud )
 %   Detailed explanation goes here
 
 R = point_cloud;
-NORMTOL = 0.99;
+NORMTOL = 0.9;
 
 
 figure
@@ -52,47 +52,47 @@ for i = 1 : 9
 %         
 %         hold off
     
-        if i == 1
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
-        save1=newlist;
-    
-        elseif i==2 
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'b.')
-        save2=newlist;
-    
-        elseif i == 3
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g.')
-        save3=newlist;
-    
-        elseif i == 4
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'c.')
-        save4=newlist;
-    
-        elseif i == 5
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'m.')
-        save5=newlist;
-    
-        elseif i == 6
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'y.')
-        save6=newlist;
-    
-        elseif i == 7
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'w.')
-        save7=newlist;
-    
-        elseif i == 8
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r*')
-        save8=newlist;
-    
-        else
-        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g*')
-        save9=newlist;
-        end
-        pause(1)
+%         if i == 1
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
+%         save1=newlist;
+%     
+%         elseif i==2 
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'b.')
+%         save2=newlist;
+%     
+%         elseif i == 3
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g.')
+%         save3=newlist;
+%     
+%         elseif i == 4
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'c.')
+%         save4=newlist;
+%     
+%         elseif i == 5
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'m.')
+%         save5=newlist;
+%     
+%         elseif i == 6
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'y.')
+%         save6=newlist;
+%     
+%         elseif i == 7
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'w.')
+%         save7=newlist;
+%     
+%         elseif i == 8
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r*')
+%         save8=newlist;
+%     
+%         else
+%         plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g*')
+%         save9=newlist;
+%         end
+%         pause(1)
         
         
     
-        if NewL > OldL + 30 %50
+        if NewL > OldL + 1 %50
             % refit plane
             [newplane,fit] = tar_fitplane(newlist);
             %[newplane',fit,NewL]
@@ -104,23 +104,65 @@ for i = 1 : 9
             end
             
             normal = plane(1:3);
+            d = plane(4);
             good = true;
             for j = 1:i
                 if planelist(j,1) ~= 0 && (i ~= j)
                     normal_j = planelist(j,1:3);
-                    if abs(dot(normal,normal_j)) > NORMTOL
-                       good = false;
+                    d_j = planelist(j,4);
+                    if abs(dot(normal,normal_j)) > NORMTOL && abs(d - d_j) < 0.08                       
+                        good = false;
                     end
                 end
             end
             
             if ~ good
-                break
+                [oldlist,plane] = tar_select_patch(remaining, planelist);
+                stillgrowing = 1;
+                remaining = [remaining;newlist];
+                continue
             end
             
             stillgrowing = 1;
             oldlist = newlist;
             plane = newplane;
+        else
+            if i == 1
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[1 0 0],'Marker','.','LineStyle','none')
+                save1=newlist;
+    
+            elseif i==2 
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[0 1 0],'Marker','.','LineStyle','none')
+                save2=newlist;
+    
+            elseif i == 3
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[0 0 1],'Marker','.','LineStyle','none')
+                save3=newlist;
+    
+            elseif i == 4
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[1 1 0],'Marker','.','LineStyle','none')
+                save4=newlist;
+    
+            elseif i == 5
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[0 1 1],'Marker','.','LineStyle','none')
+                save5=newlist;
+    
+            elseif i == 6
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[1 0 1],'Marker','.','LineStyle','none')
+                save6=newlist;
+    
+            elseif i == 7
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[1 0.5 1],'Marker','.','LineStyle','none')
+                save7=newlist;
+    
+            elseif i == 8
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[0.5 0.5 1],'Marker','.','LineStyle','none')
+                save8=newlist;
+    
+            else
+                plot3(newlist(:,4),newlist(:,5),newlist(:,6),'Color',[1 0.5 0.5],'Marker','.','LineStyle','none')
+                save9=newlist;
+            end
         end
     
     end
