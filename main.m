@@ -55,7 +55,7 @@ end
 
 %fscatter32(XYZ(:,1),XYZ(:,2),XYZ(:,3),XYZ(:,3));
 
-%my_plotpcl(target_images)
+%my_plotpcl(targets)
 
 planelist = find_planes( point_cloud );
 

@@ -3,9 +3,7 @@ function my_plotpcl(pcls)
 figure
 hold on
 
-for i = 1:16
-    
-    figure
+for i = 1:1
     
     kk = pcls{i}(:,:, 6) ~= 0;
     x  = pcls{i}(:,:, 4);

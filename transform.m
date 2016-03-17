@@ -60,9 +60,9 @@ for i = 1:N
 
 end
 
-[R,C,D] = size(target_image);
-transformed_image = zeros(R,C,D);
-for i = 1:R
+[Row,C,D] = size(target_image);
+transformed_image = zeros(Row,C,D);
+for i = 1:Row
     
     for j = 1:C
         
@@ -74,7 +74,8 @@ for i = 1:R
             Rxyz_t = (R * xyz') + t;
     
             transformed_image(i,j,1:3) = rgb;
-            transformed_image(i,j,4:6) = Rxyz_t';
+            Rxyz_t = reshape(Rxyz_t',[1,1,3]);
+            transformed_image(i,j,4:6) = Rxyz_t;
         end
     end
 

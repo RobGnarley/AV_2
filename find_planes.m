@@ -3,12 +3,14 @@ function [ planelist ] = find_planes( point_cloud )
 %   Detailed explanation goes here
 
 R = point_cloud;
+NORMTOL = 0.99;
+
 
 figure
 
-plot3(R(:,4),R(:,5),R(:,6),'k.')
-
 hold on
+
+%plot3(R(:,4),R(:,5),R(:,6),'k.')
 
 [NPts,W] = size(R);
 patchid = zeros(NPts,1);
@@ -19,73 +21,109 @@ planelist = zeros(20,4);
 % used in practice. Here we hope the 4 largest will be included in the
 % 5 by virtue of their size
 remaining = R;
+i = 1;
+plane_lists = cell(20);
+
 for i = 1 : 9   
 
-  % select a random small surface patch
-  [oldlist,plane] = tar_select_patch(remaining, planelist);
+    % select a random small surface patch
+    [oldlist,plane] = tar_select_patch(remaining, planelist);
 
-  % grow patch
-  stillgrowing = 1;
-  while stillgrowing
+    % grow patch
+    stillgrowing = 1;
+    while stillgrowing
 
-    % find neighbouring points that lie in plane
-    stillgrowing = 0;
-    [newlist,remaining] = tar_getallpoints(plane,oldlist,remaining,NPts);
-    [NewL,W] = size(newlist);
-    [OldL,W] = size(oldlist);
+        % find neighbouring points that lie in plane
+        stillgrowing = 0;
+        [newlist,remaining] = tar_getallpoints(plane,oldlist,remaining,NPts);
+        [NewL,W] = size(newlist);
+        [OldL,W] = size(oldlist);
+        
+%         plane_lists{i} = newlist;
+%         
+%         colours = {'r.','g.','b.','c.','m.','w.','y.','r*','g*','b*','c*','m*','w*','y*'};
+%         
+%         figure(1)
+%         hold on
+%         for k = 1:i
+%             st = colours(k);
+%             plot3(plane_lists{k}(:,4),plane_lists{k}(:,5),plane_lists{k}(:,6),st);
+%         end
+%         
+%         hold off
     
-    if i == 1
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
-    save1=newlist;
+        if i == 1
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r.')
+        save1=newlist;
     
-    elseif i==2 
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'b.')
-    save2=newlist;
+        elseif i==2 
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'b.')
+        save2=newlist;
     
-    elseif i == 3
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g.')
-    save3=newlist;
+        elseif i == 3
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g.')
+        save3=newlist;
     
-    elseif i == 4
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'c.')
-    save4=newlist;
+        elseif i == 4
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'c.')
+        save4=newlist;
     
-    elseif i == 5
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'m.')
-    save5=newlist;
+        elseif i == 5
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'m.')
+        save5=newlist;
     
-    elseif i == 6
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'y.')
-    save6=newlist;
+        elseif i == 6
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'y.')
+        save6=newlist;
     
-    elseif i == 7
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'w.')
-    save7=newlist;
+        elseif i == 7
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'w.')
+        save7=newlist;
     
-    elseif i == 8
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r*')
-    save8=newlist;
+        elseif i == 8
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'r*')
+        save8=newlist;
     
-    else
-    plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g*')
-    save9=newlist;
-    end
-    pause(1)
-    
-    if NewL > OldL + 30 %50
-        % refit plane
-        [newplane,fit] = tar_fitplane(newlist);
-        %[newplane',fit,NewL]
-        planelist(i,:) = newplane';
-        if fit > 0.04*NewL       % bad fit - stop growing
-            break
+        else
+        plot3(newlist(:,4),newlist(:,5),newlist(:,6),'g*')
+        save9=newlist;
         end
-        stillgrowing = 1;
-        oldlist = newlist;
-        plane = newplane;
-    end
+        pause(1)
+        
+        
     
-  end
+        if NewL > OldL + 30 %50
+            % refit plane
+            [newplane,fit] = tar_fitplane(newlist);
+            %[newplane',fit,NewL]
+            
+            planelist(i,:) = newplane';
+            
+            if fit > 0.04*NewL       % bad fit - stop growing
+                break
+            end
+            
+            normal = plane(1:3);
+            good = true;
+            for j = 1:i
+                if planelist(j,1) ~= 0 && (i ~= j)
+                    normal_j = planelist(j,1:3);
+                    if abs(dot(normal,normal_j)) > NORMTOL
+                       good = false;
+                    end
+                end
+            end
+            
+            if ~ good
+                break
+            end
+            
+            stillgrowing = 1;
+            oldlist = newlist;
+            plane = newplane;
+        end
+    
+    end
 
 waiting=1
 pause(1)
